@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zuris - Logo Path Animation</title>
+  <title>Zuris — Logo Path Animation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -14,31 +14,32 @@
                           color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
                           border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
                           box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      --duration: 3.2s;
     }
 
     [data-theme="dark"] {
       --bg-primary: #09090b;
       --surface-glass: rgba(255, 255, 255, 0.03);
       --surface-border: rgba(255, 255, 255, 0.08);
-      --surface-hover: rgba(255, 255, 255, 0.07);
+      --surface-hover: rgba(255, 255, 255, 0.08);
       --text-primary: #fafafa;
       --text-secondary: #a1a1aa;
       --text-muted: #71717a;
-      --ambient-glow: rgba(255, 255, 255, 0.14);
-      --shadow-ambient: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+      --ambient-glow: rgba(255, 255, 255, 0.15);
+      --shadow-ambient: 0 28px 56px -12px rgba(0, 0, 0, 0.65), 0 1px 0 rgba(255, 255, 255, 0.08) inset;
       --bg-gradient: radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.04) 0%, transparent 65%);
     }
 
     [data-theme="light"] {
       --bg-primary: #f8fafc;
-      --surface-glass: rgba(255, 255, 255, 0.75);
+      --surface-glass: rgba(255, 255, 255, 0.85);
       --surface-border: rgba(0, 0, 0, 0.08);
-      --surface-hover: rgba(0, 0, 0, 0.04);
+      --surface-hover: rgba(0, 0, 0, 0.05);
       --text-primary: #09090b;
       --text-secondary: #52525b;
       --text-muted: #a1a1aa;
       --ambient-glow: rgba(0, 0, 0, 0.08);
-      --shadow-ambient: 0 24px 48px -12px rgba(0, 0, 0, 0.08);
+      --shadow-ambient: 0 28px 56px -12px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
       --bg-gradient: radial-gradient(circle at 50% 38%, rgba(0, 0, 0, 0.03) 0%, transparent 65%);
     }
 
@@ -58,9 +59,11 @@
       color: var(--text-primary);
       font-family: var(--font-brand);
       overflow-x: hidden;
-      padding: 2rem 1.5rem;
+      padding: 2.5rem 1.5rem;
       position: relative;
       transition: var(--transition-theme);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     body::before {
@@ -73,11 +76,11 @@
       transition: var(--transition-theme);
     }
 
-    /* Top Navigation bar */
+    /* Top utility bar */
     .header-bar {
       position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
+      top: 1.75rem;
+      right: 1.75rem;
       z-index: 50;
       display: flex;
       align-items: center;
@@ -85,8 +88,8 @@
     }
 
     .theme-toggle-btn {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       background: var(--surface-glass);
       border: 1px solid var(--surface-border);
@@ -95,19 +98,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: all 0.25s ease;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .theme-toggle-btn:hover {
       background: var(--surface-hover);
-      transform: scale(1.05);
+      transform: scale(1.06);
+    }
+
+    .theme-toggle-btn:active {
+      transform: scale(0.96);
     }
 
     .theme-toggle-btn svg {
-      width: 18px;
-      height: 18px;
+      width: 19px;
+      height: 19px;
       fill: none;
       stroke: currentColor;
       stroke-width: 2;
@@ -121,22 +128,22 @@
     [data-theme="light"] .icon-sun { display: block; }
     [data-theme="light"] .icon-moon { display: none; }
 
-    /* Main Showcase Container */
+    /* Showcase card */
     .showcase-container {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 620px;
+      max-width: 640px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 4.5rem 3rem;
-      border-radius: 32px;
+      border-radius: 36px;
       background: var(--surface-glass);
       border: 1px solid var(--surface-border);
-      backdrop-filter: blur(32px);
-      -webkit-backdrop-filter: blur(32px);
+      backdrop-filter: blur(36px);
+      -webkit-backdrop-filter: blur(36px);
       box-shadow: var(--shadow-ambient);
       transition: var(--transition-theme);
     }
@@ -150,12 +157,13 @@
       aspect-ratio: 292 / 208;
     }
 
+    /* Ambient atmospheric glow */
     .ambient-glow-layer {
       position: absolute;
-      inset: -15%;
+      inset: -18%;
       background: radial-gradient(ellipse at center, var(--ambient-glow) 0%, transparent 70%);
-      filter: blur(42px);
-      opacity: 0.65;
+      filter: blur(48px);
+      opacity: 0.7;
       border-radius: 50%;
       pointer-events: none;
       animation: ambientBreathing 4.5s ease-in-out infinite alternate;
@@ -165,11 +173,11 @@
 
     @keyframes ambientBreathing {
       0% {
-        opacity: 0.35;
-        transform: scale(0.92);
+        opacity: 0.4;
+        transform: scale(0.94);
       }
       100% {
-        opacity: 0.85;
+        opacity: 0.9;
         transform: scale(1.08);
       }
     }
@@ -183,6 +191,7 @@
       display: block;
     }
 
+    /* Path Animation Core */
     .logo-path {
       fill: transparent;
       stroke: var(--text-primary);
@@ -196,8 +205,13 @@
 
     .animating .logo-path {
       animation:
-        drawStroke calc(var(--duration, 3.2s)) cubic-bezier(0.65, 0, 0.35, 1) forwards,
-        fillIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--duration, 3.2s) - 0.5s) forwards;
+        drawStroke var(--duration) cubic-bezier(0.65, 0, 0.35, 1) forwards,
+        fillIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--duration) - 0.5s) forwards;
+    }
+
+    /* Stroke-only mode */
+    body.mode-stroke-only .animating .logo-path {
+      animation: drawStroke var(--duration) cubic-bezier(0.65, 0, 0.35, 1) forwards;
     }
 
     @keyframes drawStroke {
@@ -218,7 +232,7 @@
       }
     }
 
-    /* Brand Typography with -4.5px Letter-Spacing & Blur-In */
+    /* Brand Typography with strictly -4.5px Letter-Spacing & Blur-In */
     .brand-title {
       position: relative;
       z-index: 1;
@@ -232,20 +246,20 @@
       text-align: center;
       color: var(--text-primary);
       opacity: 0;
-      filter: blur(14px);
-      transform: translateY(12px);
+      filter: blur(16px);
+      transform: translateY(14px);
       transition: color 0.4s ease;
     }
 
     .animating .brand-title {
-      animation: smoothBlurReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--duration, 3.2s) - 0.8s) forwards;
+      animation: smoothBlurReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--duration) - 0.75s) forwards;
     }
 
     @keyframes smoothBlurReveal {
       0% {
         opacity: 0;
-        filter: blur(14px);
-        transform: translateY(12px);
+        filter: blur(16px);
+        transform: translateY(14px);
       }
       100% {
         opacity: 1;
@@ -254,22 +268,22 @@
       }
     }
 
-    /* Control Dock */
+    /* Minimalist Glass Control Dock */
     .control-dock {
       position: relative;
       z-index: 20;
-      margin-top: 2.5rem;
+      margin-top: 2.75rem;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      gap: 0.75rem;
-      padding: 0.6rem 1rem;
+      gap: 0.65rem;
+      padding: 0.65rem 1.1rem;
       border-radius: 999px;
       background: var(--surface-glass);
       border: 1px solid var(--surface-border);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       box-shadow: var(--shadow-ambient);
       transition: var(--transition-theme);
     }
@@ -277,8 +291,8 @@
     .control-btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.55rem 1rem;
+      gap: 0.45rem;
+      padding: 0.55rem 0.95rem;
       border-radius: 999px;
       background: transparent;
       border: 1px solid transparent;
@@ -287,7 +301,8 @@
       font-size: 0.85rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
     }
 
     .control-btn:hover {
@@ -315,12 +330,33 @@
       width: 1px;
       height: 18px;
       background: var(--surface-border);
+      margin: 0 0.15rem;
+    }
+
+    .keyboard-hint {
+      margin-top: 1.25rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: -0.2px;
+      text-align: center;
+      user-select: none;
+    }
+
+    kbd {
+      display: inline-block;
+      padding: 0.15rem 0.4rem;
+      font-size: 0.7rem;
+      font-family: inherit;
+      background: var(--surface-hover);
+      border: 1px solid var(--surface-border);
+      border-radius: 4px;
+      color: var(--text-secondary);
     }
   </style>
 </head>
 <body class="animating">
   <div class="header-bar">
-    <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle theme">
+    <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle theme (T)">
       <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
       <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
     </button>
@@ -341,9 +377,14 @@
   </main>
 
   <nav class="control-dock" aria-label="Animation controls">
-    <button id="replayBtn" class="control-btn" title="Replay Animation">
+    <button id="replayBtn" class="control-btn" title="Replay Animation (R or Space)">
       <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
       <span>Replay</span>
+    </button>
+    <div class="divider"></div>
+    <button id="modeToggle" class="control-btn" title="Toggle Stroke / Fill Mode">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10v0a10 10 0 0 1-10 10"></path></svg>
+      <span id="modeLabel">Fill + Stroke</span>
     </button>
     <div class="divider"></div>
     <button class="control-btn speed-btn" data-speed="1" title="1x Speed">1x</button>
@@ -351,34 +392,54 @@
     <button class="control-btn speed-btn" data-speed="2" title="2x Speed">2x</button>
   </nav>
 
+  <p class="keyboard-hint">Press <kbd>Space</kbd> to replay &bull; <kbd>T</kbd> to toggle theme</p>
+
   <script>
     const root = document.documentElement;
     const body = document.body;
     const path = document.getElementById('animatedPath');
     const replayBtn = document.getElementById('replayBtn');
     const themeToggle = document.getElementById('themeToggle');
+    const modeToggle = document.getElementById('modeToggle');
+    const modeLabel = document.getElementById('modeLabel');
     const speedButtons = document.querySelectorAll('.speed-btn');
 
-    // Dynamically calculate path length
+    // Compute dynamic path length
     if (path) {
       const length = Math.ceil(path.getTotalLength());
       root.style.setProperty('--path-length', length);
     }
 
-    // Replay animation trigger
+    // Replay animation
     function restartAnimation() {
       body.classList.remove('animating');
-      void body.offsetWidth; // Force DOM reflow
+      void body.offsetWidth; // Trigger DOM reflow
       body.classList.add('animating');
     }
 
     replayBtn.addEventListener('click', restartAnimation);
 
     // Theme switcher
-    themeToggle.addEventListener('click', () => {
+    function toggleTheme() {
       const currentTheme = root.getAttribute('data-theme') || 'dark';
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       root.setAttribute('data-theme', newTheme);
+    }
+
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // Mode toggle (Fill + Stroke vs Stroke Only)
+    let strokeOnly = false;
+    modeToggle.addEventListener('click', () => {
+      strokeOnly = !strokeOnly;
+      if (strokeOnly) {
+        body.classList.add('mode-stroke-only');
+        modeLabel.textContent = 'Stroke Only';
+      } else {
+        body.classList.remove('mode-stroke-only');
+        modeLabel.textContent = 'Fill + Stroke';
+      }
+      restartAnimation();
     });
 
     // Speed controller
@@ -394,8 +455,19 @@
       });
     });
 
-    // Set initial active speed
+    // Default speed active state
     if (speedButtons.length > 0) speedButtons[0].classList.add('active');
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.code === 'Space' || e.key === 'r' || e.key === 'R') {
+        e.preventDefault();
+        restartAnimation();
+      } else if (e.key === 't' || e.key === 'T') {
+        toggleTheme();
+      }
+    });
   </script>
 </body>
 </html>
