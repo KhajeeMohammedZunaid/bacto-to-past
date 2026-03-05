@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zuris - Logo Path Animation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-brand: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --bg-primary: #09090b;
+      --text-primary: #fafafa;
+      --text-secondary: #a1a1aa;
+      --accent-color: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-brand);
+      overflow-x: hidden;
+      padding: 2rem;
+    }
+
+    .brand-title {
+      font-family: var(--font-brand);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 800;
+      letter-spacing: -4.5px;
+      line-height: 1;
+      margin-top: 2rem;
+      user-select: none;
+    }
+
+    .showcase-container {
+      position: relative;
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+    }
+
+    .logo-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-svg {
+      width: min(292px, 75vw);
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <main class="showcase-container">
+    <div class="logo-wrapper">
+      <svg class="logo-svg" viewBox="0 0 292 208" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="logo-path"
+              d="M0 0H212C249.5 0 280 30.5 280 67C280 94 266 112 245 131L230 146L292 208H226L164 146L101 208H0V129L81 47H0V0ZM147 47H212C224 47 233 56 233 68C233 75 229 82 223 88L164 146V80L82 162H34L147 47Z"
+              fill="currentColor"
+              fill-rule="evenodd"
+              clip-rule="evenodd" />
+      </svg>
+    </div>
+    <h1 class="brand-title">Zuris</h1>
+  </main>
+</body>
+</html>
