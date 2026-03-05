@@ -11,9 +11,11 @@
     :root {
       --font-brand: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --bg-primary: #09090b;
+      --surface-glass: rgba(255, 255, 255, 0.03);
+      --surface-border: rgba(255, 255, 255, 0.08);
       --text-primary: #fafafa;
       --text-secondary: #a1a1aa;
-      --accent-color: #3b82f6;
+      --ambient-glow: rgba(255, 255, 255, 0.12);
       --stroke-width: 2.5px;
       --animation-duration: 3.2s;
     }
@@ -35,28 +37,37 @@
       font-family: var(--font-brand);
       overflow-x: hidden;
       padding: 2rem;
+      position: relative;
     }
 
-    .brand-title {
-      font-family: var(--font-brand);
-      font-size: clamp(3rem, 7vw, 5.5rem);
-      font-weight: 800;
-      letter-spacing: -4.5px;
-      line-height: 1;
-      margin-top: 2.5rem;
-      user-select: none;
-      text-align: center;
+    /* Ambient atmospheric background gradient */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     .showcase-container {
       position: relative;
+      z-index: 1;
       width: 100%;
-      max-width: 720px;
+      max-width: 640px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 3rem 2rem;
+      padding: 4.5rem 3rem;
+      border-radius: 28px;
+      background: var(--surface-glass);
+      border: 1px solid var(--surface-border);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      box-shadow:
+        0 24px 48px -12px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
     .logo-wrapper {
@@ -64,18 +75,44 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: min(340px, 80vw);
+      width: min(320px, 80vw);
       aspect-ratio: 292 / 208;
     }
 
+    /* Ambient Soft Glow Behind Logo */
+    .ambient-glow-layer {
+      position: absolute;
+      inset: -15%;
+      background: radial-gradient(ellipse at center, var(--ambient-glow) 0%, transparent 70%);
+      filter: blur(40px);
+      opacity: 0.6;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: ambientBreathing 4.5s ease-in-out infinite alternate;
+      z-index: 0;
+    }
+
+    @keyframes ambientBreathing {
+      0% {
+        opacity: 0.35;
+        transform: scale(0.92);
+      }
+      100% {
+        opacity: 0.85;
+        transform: scale(1.08);
+      }
+    }
+
     .logo-svg {
+      position: relative;
+      z-index: 1;
       width: 100%;
       height: 100%;
       overflow: visible;
       display: block;
     }
 
-    /* Path Animation Engine */
+    /* Precision Path Animation */
     .logo-path {
       fill: transparent;
       stroke: var(--text-primary);
@@ -86,7 +123,7 @@
       stroke-dashoffset: var(--path-length, 2400);
       animation:
         drawStroke var(--animation-duration) cubic-bezier(0.65, 0, 0.35, 1) forwards,
-        fillIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--animation-duration) - 0.6s) forwards;
+        fillIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--animation-duration) - 0.5s) forwards;
     }
 
     @keyframes drawStroke {
@@ -106,11 +143,44 @@
         fill: var(--text-primary);
       }
     }
+
+    /* Typography with Smooth Blur Fade */
+    .brand-title {
+      position: relative;
+      z-index: 1;
+      font-family: var(--font-brand);
+      font-size: clamp(3.2rem, 7.5vw, 5.5rem);
+      font-weight: 800;
+      letter-spacing: -4.5px;
+      line-height: 1;
+      margin-top: 3rem;
+      user-select: none;
+      text-align: center;
+      color: var(--text-primary);
+      opacity: 0;
+      filter: blur(14px);
+      transform: translateY(12px);
+      animation: smoothBlurReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--animation-duration) - 0.8s) forwards;
+    }
+
+    @keyframes smoothBlurReveal {
+      0% {
+        opacity: 0;
+        filter: blur(14px);
+        transform: translateY(12px);
+      }
+      100% {
+        opacity: 1;
+        filter: blur(0px);
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 <body>
   <main class="showcase-container">
     <div class="logo-wrapper">
+      <div class="ambient-glow-layer" aria-hidden="true"></div>
       <svg class="logo-svg" viewBox="0 0 292 208" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path id="animatedPath"
               class="logo-path"
@@ -123,7 +193,6 @@
   </main>
 
   <script>
-    // Compute exact SVG path length dynamically
     const path = document.getElementById('animatedPath');
     if (path) {
       const length = Math.ceil(path.getTotalLength());
