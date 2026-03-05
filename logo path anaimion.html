@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +10,36 @@
   <style>
     :root {
       --font-brand: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --transition-theme: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                          color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                          border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                          box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
       --bg-primary: #09090b;
       --surface-glass: rgba(255, 255, 255, 0.03);
       --surface-border: rgba(255, 255, 255, 0.08);
+      --surface-hover: rgba(255, 255, 255, 0.07);
       --text-primary: #fafafa;
       --text-secondary: #a1a1aa;
-      --ambient-glow: rgba(255, 255, 255, 0.12);
-      --stroke-width: 2.5px;
-      --animation-duration: 3.2s;
+      --text-muted: #71717a;
+      --ambient-glow: rgba(255, 255, 255, 0.14);
+      --shadow-ambient: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+      --bg-gradient: radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.04) 0%, transparent 65%);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --surface-glass: rgba(255, 255, 255, 0.75);
+      --surface-border: rgba(0, 0, 0, 0.08);
+      --surface-hover: rgba(0, 0, 0, 0.04);
+      --text-primary: #09090b;
+      --text-secondary: #52525b;
+      --text-muted: #a1a1aa;
+      --ambient-glow: rgba(0, 0, 0, 0.08);
+      --shadow-ambient: 0 24px 48px -12px rgba(0, 0, 0, 0.08);
+      --bg-gradient: radial-gradient(circle at 50% 38%, rgba(0, 0, 0, 0.03) 0%, transparent 65%);
     }
 
     * {
@@ -36,38 +58,87 @@
       color: var(--text-primary);
       font-family: var(--font-brand);
       overflow-x: hidden;
-      padding: 2rem;
+      padding: 2rem 1.5rem;
       position: relative;
+      transition: var(--transition-theme);
     }
 
-    /* Ambient atmospheric background gradient */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+      background: var(--bg-gradient);
       pointer-events: none;
       z-index: 0;
+      transition: var(--transition-theme);
     }
 
+    /* Top Navigation bar */
+    .header-bar {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .theme-toggle-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--surface-glass);
+      border: 1px solid var(--surface-border);
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: all 0.25s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--surface-hover);
+      transform: scale(1.05);
+    }
+
+    .theme-toggle-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .icon-sun { display: none; }
+    .icon-moon { display: block; }
+
+    [data-theme="light"] .icon-sun { display: block; }
+    [data-theme="light"] .icon-moon { display: none; }
+
+    /* Main Showcase Container */
     .showcase-container {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 640px;
+      max-width: 620px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 4.5rem 3rem;
-      border-radius: 28px;
+      border-radius: 32px;
       background: var(--surface-glass);
       border: 1px solid var(--surface-border);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      box-shadow:
-        0 24px 48px -12px rgba(0, 0, 0, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      box-shadow: var(--shadow-ambient);
+      transition: var(--transition-theme);
     }
 
     .logo-wrapper {
@@ -79,17 +150,17 @@
       aspect-ratio: 292 / 208;
     }
 
-    /* Ambient Soft Glow Behind Logo */
     .ambient-glow-layer {
       position: absolute;
       inset: -15%;
       background: radial-gradient(ellipse at center, var(--ambient-glow) 0%, transparent 70%);
-      filter: blur(40px);
-      opacity: 0.6;
+      filter: blur(42px);
+      opacity: 0.65;
       border-radius: 50%;
       pointer-events: none;
       animation: ambientBreathing 4.5s ease-in-out infinite alternate;
       z-index: 0;
+      transition: background 0.4s ease;
     }
 
     @keyframes ambientBreathing {
@@ -112,18 +183,21 @@
       display: block;
     }
 
-    /* Precision Path Animation */
     .logo-path {
       fill: transparent;
       stroke: var(--text-primary);
-      stroke-width: var(--stroke-width);
+      stroke-width: 2.5px;
       stroke-linecap: round;
       stroke-linejoin: round;
       stroke-dasharray: var(--path-length, 2400);
       stroke-dashoffset: var(--path-length, 2400);
+      transition: stroke 0.4s ease;
+    }
+
+    .animating .logo-path {
       animation:
-        drawStroke var(--animation-duration) cubic-bezier(0.65, 0, 0.35, 1) forwards,
-        fillIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--animation-duration) - 0.5s) forwards;
+        drawStroke calc(var(--duration, 3.2s)) cubic-bezier(0.65, 0, 0.35, 1) forwards,
+        fillIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--duration, 3.2s) - 0.5s) forwards;
     }
 
     @keyframes drawStroke {
@@ -144,7 +218,7 @@
       }
     }
 
-    /* Typography with Smooth Blur Fade */
+    /* Brand Typography with -4.5px Letter-Spacing & Blur-In */
     .brand-title {
       position: relative;
       z-index: 1;
@@ -160,7 +234,11 @@
       opacity: 0;
       filter: blur(14px);
       transform: translateY(12px);
-      animation: smoothBlurReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--animation-duration) - 0.8s) forwards;
+      transition: color 0.4s ease;
+    }
+
+    .animating .brand-title {
+      animation: smoothBlurReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--duration, 3.2s) - 0.8s) forwards;
     }
 
     @keyframes smoothBlurReveal {
@@ -175,9 +253,79 @@
         transform: translateY(0);
       }
     }
+
+    /* Control Dock */
+    .control-dock {
+      position: relative;
+      z-index: 20;
+      margin-top: 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 0.6rem 1rem;
+      border-radius: 999px;
+      background: var(--surface-glass);
+      border: 1px solid var(--surface-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-ambient);
+      transition: var(--transition-theme);
+    }
+
+    .control-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-brand);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .control-btn:hover {
+      color: var(--text-primary);
+      background: var(--surface-hover);
+    }
+
+    .control-btn.active {
+      color: var(--text-primary);
+      background: var(--surface-hover);
+      border-color: var(--surface-border);
+    }
+
+    .control-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .divider {
+      width: 1px;
+      height: 18px;
+      background: var(--surface-border);
+    }
   </style>
 </head>
-<body>
+<body class="animating">
+  <div class="header-bar">
+    <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle color theme" title="Toggle theme">
+      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    </button>
+  </div>
+
   <main class="showcase-container">
     <div class="logo-wrapper">
       <div class="ambient-glow-layer" aria-hidden="true"></div>
@@ -192,12 +340,62 @@
     <h1 class="brand-title">Zuris</h1>
   </main>
 
+  <nav class="control-dock" aria-label="Animation controls">
+    <button id="replayBtn" class="control-btn" title="Replay Animation">
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      <span>Replay</span>
+    </button>
+    <div class="divider"></div>
+    <button class="control-btn speed-btn" data-speed="1" title="1x Speed">1x</button>
+    <button class="control-btn speed-btn" data-speed="1.5" title="1.5x Speed">1.5x</button>
+    <button class="control-btn speed-btn" data-speed="2" title="2x Speed">2x</button>
+  </nav>
+
   <script>
+    const root = document.documentElement;
+    const body = document.body;
     const path = document.getElementById('animatedPath');
+    const replayBtn = document.getElementById('replayBtn');
+    const themeToggle = document.getElementById('themeToggle');
+    const speedButtons = document.querySelectorAll('.speed-btn');
+
+    // Dynamically calculate path length
     if (path) {
       const length = Math.ceil(path.getTotalLength());
-      document.documentElement.style.setProperty('--path-length', length);
+      root.style.setProperty('--path-length', length);
     }
+
+    // Replay animation trigger
+    function restartAnimation() {
+      body.classList.remove('animating');
+      void body.offsetWidth; // Force DOM reflow
+      body.classList.add('animating');
+    }
+
+    replayBtn.addEventListener('click', restartAnimation);
+
+    // Theme switcher
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = root.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', newTheme);
+    });
+
+    // Speed controller
+    speedButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        speedButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const speed = parseFloat(btn.getAttribute('data-speed'));
+        const baseDuration = 3.2;
+        const newDuration = (baseDuration / speed).toFixed(2) + 's';
+        root.style.setProperty('--duration', newDuration);
+        restartAnimation();
+      });
+    });
+
+    // Set initial active speed
+    if (speedButtons.length > 0) speedButtons[0].classList.add('active');
   </script>
 </body>
 </html>
